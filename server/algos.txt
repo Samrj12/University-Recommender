@@ -1,0 +1,34 @@
+SAT Algo: 
+if user_sat < sat_25th:
+            # Low base score for SAT below the 25th percentile
+            score = 20 + (user_sat - sat_25th) / 10  # Ensure the score stays above 20
+        elif sat_25th <= user_sat <= sat_75th:
+            # Variable score for SAT within the range
+            score = 20 + 60 * (user_sat - sat_25th) / (sat_75th - sat_25th)
+        else:  # user_sat > sat_75th
+            # High base score for SAT above the 75th percentile
+            score = 80 - (user_sat - sat_75th) / 10  # Ensure the score stays below 80
+        return max(5, min(score, 85)) 
+
+
+Sports Algo
+const baseScores = {
+    'Division I': 100,
+    'Division II': 70,
+    'Division III': 50
+};
+
+// Calculate adjustment factors as 1% of the base scores
+const adjustmentFactors = {
+    'Division I': 0.4
+    'Division II': 0.3
+    'Division III': 0.2
+};
+
+// Function to calculate ranking score
+function calculateRankingScore(division, rank) {
+    const baseScore = baseScores[division] || 0;
+    const adjustmentFactor = adjustmentFactors[division] || 0;
+    const rankingScore = baseScore - (rank * adjustmentFactor);
+    return rankingScore;
+}
