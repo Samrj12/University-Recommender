@@ -1,7 +1,8 @@
 import React from "react";
 import { useForm } from "react-hook-form";
+import {StickyNavbar} from "./Narbar";
 import { Select, Option, Button, Input } from "@material-tailwind/react";
-import img from "../res/landingPage.jpeg"
+import img from "../res/landingPage.png"
 
 export const LandingPage = () => {
   const {
@@ -14,20 +15,25 @@ export const LandingPage = () => {
     console.log(data);
   }
   return (
-    <div class="max-h-screen max-w-[85rem] mx-auto px-4 sm:px-6 py-8">
-      <div class="grid md:grid-cols-2 gap-4 md:gap-8 xl:gap-20 md:items-center">
+    <div class="max-h-screen">
+      <StickyNavbar/>
+      <div class="grid md:grid-cols-2 gap-2 xl:gap-10 md:items-center mt-10">
         <div>
-          <h1 class="block text-3xl font-bold text-gray-800 sm:text-4xl lg:text-6xl lg:leading-tight">
+        <h1 class="block text-xl font-bold text-gray-800 sm:text-4xl lg:text-5xl lg:leading-tight">
             Find your best match school with{" "}
             <span class="text-blue-600">UniMatch</span>
           </h1>
-          <p class="mt-3 text-lg text-gray-800 ">
-            Hand-picked professionals and expertly crafted components, designed
-            for any kind of entrepreneur.
+          <img src={img} alt="landing page" className="w-[30rem] h-[25rem] mx-auto object-cover m-4" />
+          <p class="mt-3 text-xl font-body text-gray-800 ">
+          Powered by intelligent matching algorithms to help you find the perfect university fit.
           </p>
+        </div>
+
+        <div class="relative ms-4">          
           <form onSubmit={handleSubmit(onSubmit)}>
             <div class="lg:max-w-lg mx-auto">
-              <div class="p-4 sm:p-7 flex flex-col bg-white rounded-2xl shadow-lg dark:bg-neutral-900">
+              <div class="p-4 sm:p-10 flex flex-col bg-white rounded-2xl shadow-xl drop-shadow-2xl dark:bg-neutral-800">
+              <h2 class="text-4xl font-semibold text-gray-800 dark:text-white">Get Instant Recommendations</h2>
                 <div class="mt-5">
                   <div class="grid grid-cols-2 gap-4">
                     <div className="col-span-2">
@@ -38,13 +44,12 @@ export const LandingPage = () => {
                         {...register("SATV", {
                           required: "Please enter your SAT Verbal Score.",
                           min: 0,
-                          max: 800,
+                          max: 800
                         })}
-                        error={errors.SATV == null}
                       />
 
                       {errors.SATV && (
-                        <p className="mt-2 text-red-500">
+                        <p className="mt-2 text-sm text-red-500">
                           {errors.SATV.message}
                         </p>
                       )}
@@ -57,9 +62,8 @@ export const LandingPage = () => {
                         {...register("SATM", {
                           required: "Please enter your SAT Math Score.",
                           min: 0,
-                          max: 800,
+                          max: 800
                         })}
-                        error={errors.SATM !== null}
                       />
                       {errors.SATM && (
                         <p className="mt-2 text-sm text-red-500">
@@ -71,11 +75,7 @@ export const LandingPage = () => {
                       <Select
                         label="Sports Interest"
                         defaultValue="None"
-                        {...register("SATM", {
-                          required: "Please enter your SAT Math Score.",
-                          min: 0,
-                          max: 800,
-                        })}
+                        {...register("Sports")}
                         color="blue"
                       >
                         <Option value="Basketball">Basketball</Option>
@@ -87,6 +87,9 @@ export const LandingPage = () => {
                       <Select
                         label="Career Interest"
                         defaultValue="None"
+                        {
+                          ...register("Career")
+                        }
                         color="blue"
                       >
                         <Option value="ComputerSci">Computer Science</Option>
@@ -109,11 +112,14 @@ export const LandingPage = () => {
                         <input
                           type="checkbox"
                           value=""
+                        {...register("Agreement", {
+                          required: "Please accept the terms and conditions.",
+                        })}
                           class="w-4 h-4 text-blue-600 border rounded-md focus:ring-blue-500 dark:focus:ring-blue-600 focus:ring-1 dark:bg-gray-700"
                         />
                         <label
                           for="link-checkbox"
-                          class="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300"
+                          class="ms-2 text-sm font-medium text-gray-800 dark:text-gray-300"
                         >
                           I agree with the{" "}
                           <a
@@ -127,7 +133,13 @@ export const LandingPage = () => {
                       </div>
                     </div>
                   </div>
-
+                  
+                    
+                  {errors.Agreement && (
+                        <p className="mt-2 text-sm text-red-500">
+                          {errors.Agreement.message}
+                        </p>
+                      )}
                   <div class="mt-5 mx-10">
                     <button
                       type="submit"
@@ -140,104 +152,6 @@ export const LandingPage = () => {
               </div>
             </div>
           </form>
-        </div>
-
-        <div class="relative ms-4">
-          <img
-            class="w-full h-[50%] rounded-md"
-            src={img}
-             alt="Image Description"
-          />
-          <div class="absolute inset-0 -z-[1] bg-gradient-to-tr from-gray-200 via-white/0 to-white/0 size-full rounded-md mt-4 -mb-4 me-4 -ms-4 lg:mt-6 lg:me-6 lg:-ms-6 dark:from-neutral-800 dark:via-neutral-900/0 dark:to-neutral-900/0"></div>
-
-          <div class="absolute bottom-0 start-0">
-            <svg
-              class="w-2/3 ms-auto h-auto text-white"
-              width="630"
-              height="451"
-              viewBox="0 0 630 451"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <rect
-                x="531"
-                y="352"
-                width="99"
-                height="99"
-                fill="currentColor"
-              />
-              <rect
-                x="140"
-                y="352"
-                width="106"
-                height="99"
-                fill="currentColor"
-              />
-              <rect
-                x="482"
-                y="402"
-                width="64"
-                height="49"
-                fill="currentColor"
-              />
-              <rect
-                x="433"
-                y="402"
-                width="63"
-                height="49"
-                fill="currentColor"
-              />
-              <rect
-                x="384"
-                y="352"
-                width="49"
-                height="50"
-                fill="currentColor"
-              />
-              <rect
-                x="531"
-                y="328"
-                width="50"
-                height="50"
-                fill="currentColor"
-              />
-              <rect x="99" y="303" width="49" height="58" fill="currentColor" />
-              <rect x="99" y="352" width="49" height="50" fill="currentColor" />
-              <rect x="99" y="392" width="49" height="59" fill="currentColor" />
-              <rect x="44" y="402" width="66" height="49" fill="currentColor" />
-              <rect
-                x="234"
-                y="402"
-                width="62"
-                height="49"
-                fill="currentColor"
-              />
-              <rect
-                x="334"
-                y="303"
-                width="50"
-                height="49"
-                fill="currentColor"
-              />
-              <rect x="581" width="49" height="49" fill="currentColor" />
-              <rect x="581" width="49" height="64" fill="currentColor" />
-              <rect
-                x="482"
-                y="123"
-                width="49"
-                height="49"
-                fill="currentColor"
-              />
-              <rect
-                x="507"
-                y="124"
-                width="49"
-                height="24"
-                fill="currentColor"
-              />
-              <rect x="531" y="49" width="99" height="99" fill="currentColor" />
-            </svg>
-          </div>
         </div>
       </div>
     </div>

@@ -1,7 +1,13 @@
 import React, { useState } from "react";
 
 export const ResultsPage = () => {
-  const [unis, setUnis] = useState([]);
+  const [unis, setUnis] = useState([{
+    name: "University of California, Los Angeles",
+    location: "Los Angeles, California",
+    img: "https://media.istockphoto.com/id/464975554/photo/toledo-spain.jpg?s=612x612&w=is&k=20&c=IIMQNbk0lNoRo9vechxawYUQI_T_r0cZY35C86Gzcy4=",
+    public: true
+  
+  }]);
   return (
     <div>
       <div class="sticky top-0 inset-x-0 z-20 bg-white border-y px-4 sm:px-6 lg:px-8 lg:hidden dark:bg-neutral-800 dark:border-neutral-700">
@@ -578,17 +584,18 @@ export const ResultsPage = () => {
         <h1 class="text-3xl font-semibold border-b mb-4 text-gray-800 p-4">
           Rankings
         </h1>
+        <div className="">
         {unis.map((uni) => (
           <a
             href="#"
-            class="flex flex-col h-[12rem] mx-4 items-center bg-white border border-gray-200 rounded-lg shadow md:flex-row  hover:bg-gray-100 dark:border-gray-700 dark:bg-gray-800 dark:hover:bg-gray-700"
+            class="flex overflow-x-scroll tablet:overflow-x-auto max-[500px]:overflow-x-auto mx-4  h-fit items-center bg-white border border-gray-200 rounded-lg shadow flex-row  hover:bg-gray-100 dark:border-gray-700 dark:bg-gray-800 dark:hover:bg-gray-700"
           >
             <img
-              class="object-cover h-full rounded-t-lg  md:rounded-none md:rounded-s-lg"
+              class="object-cover block w-auto lg:h-[12rem] md:h-[170px] h-[9rem] rounded-t-lg  md:rounded-none md:rounded-s-lg"
               src={uni.img}
               alt=""
             />
-            <div class="flex flex-col text-start p-4 leading-normal">
+            <div class="flex flex-col text-start p-4 leading-normal min-w-[31rem]">
               <div className="w-full flex justify-between items-center">
                 
               <h5 class="text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
@@ -601,7 +608,7 @@ export const ResultsPage = () => {
               <h6 class="mb-2 text-base font-semibold text-gray-800 dark:text-gray-200">
                 {uni.location}
               </h6>
-              <p class="mb-3 font-normal text-gray-700 dark:text-gray-400">
+              <p class="mb-3 font-normal text-gray-700 dark:text-gray-400 truncate">
                 Here are the biggest enterprise technology acquisitions of 2021
                 so far, in reverse chronological order.
               </p>
@@ -616,7 +623,7 @@ export const ResultsPage = () => {
               </div>
               </div>
             </div>
-          </a>))}
+          </a>))}</div>
       </div>
     </div>
   );
