@@ -4,19 +4,18 @@ import { useForm } from "react-hook-form";
 import { useLocation, useNavigate } from "react-router-dom";
 
 export const ResultsPage = () => {
+  const navigate = useNavigate();
 
-   const navigate = useNavigate();
-  
-    const {
-      register,
-      handleSubmit,
-      formState: { errors },setValue
-    } = useForm();
-  
-    const onSubmit = (data) => {
-      console.log(data);
-      navigate('/results', { state: { query: data.query } });
-    };
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    setValue,
+  } = useForm();
+
+  const onSubmit = (data) => {
+    navigate("/results", { state: { query: {...data, careerWeight} } });
+  };
   // const [unis, setUnis] = useState([
   //   {
   //     name: "University of Alaska--Fairbanks",
@@ -71,7 +70,11 @@ export const ResultsPage = () => {
   const location = useLocation();
   const query = location.state?.query;
   const [unis, setUnis] = useState([]);
-  
+  const [careerWeight, setCareerWeight] = useState(0.3);
+  const sportsWeight = 0.5 - careerWeight;
+    const handleSliderChange = (e) => {
+      setCareerWeight(parseFloat(e.target.value));
+    };
   const fetchData = async () => {
     try {
       const response = await axios.post(
@@ -82,7 +85,7 @@ export const ResultsPage = () => {
     } catch (error) {
       console.error("Error fetching data:", error);
     }
-  }
+  };
   useEffect(() => {
     if (query) {
       Object.entries(query).forEach(([key, value]) => {
@@ -91,7 +94,7 @@ export const ResultsPage = () => {
     }
     fetchData();
   }, [query, setValue]);
-  
+
   return (
     <div>
       <div class="sticky top-0 inset-x-0 z-20 bg-white border-y px-4 sm:px-6 lg:px-8 lg:hidden dark:bg-neutral-800 dark:border-neutral-700">
@@ -181,97 +184,139 @@ export const ResultsPage = () => {
               class="hs-accordion-group p-3 w-full flex flex-col flex-wrap"
               data-hs-accordion-always-open
             >
-              
-                        <form onSubmit={handleSubmit(onSubmit)}>
-                                <div class="grid grid-cols-2 gap-4">
-                                  <div className="col-span-2">
-                                    <input
-                                      label="SAT Verbal Score"
-                                      color="blue"
-                                      type="number"
-                                      aria-describedby="helper-text-explanation"
-                                      class="bg-gray-50  text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:border-gray-600 placeholder-gray-600 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                                      placeholder="SAT Verbal Score"
-                                      {...register("SATV", {
-                                        required: "Please enter your SAT Verbal Score.",
-                                        min: 0,
-                                        max: 800,
-                                      })}
-                                    />
-              
-                                    {errors.SATV && (
-                                      <p className="mt-2 text-sm text-red-500">
-                                        {errors.SATV.message}
-                                      </p>
-                                    )}
-                                  </div>
-                                  <div className="col-span-2">
-                                    <input
-                                      label="SAT Math Score"
-                                      aria-describedby="helper-text-explanation"
-                                      class="bg-gray-50  text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:border-gray-600 placeholder-gray-600 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                                      placeholder="SAT Math Score"
-                                      color="blue"
-                                      type="number"
-                                      {...register("SATM", {
-                                        required: "Please enter your SAT Math Score.",
-                                        min: 0,
-                                        max: 800,
-                                      })}
-                                    />
-                                    {errors.SATM && (
-                                      <p className="mt-2 text-sm text-red-500">
-                                        {errors.SATM.message}
-                                      </p>
-                                    )}
-                                  </div>
-                                  <div className="col-span-2">
-                                    <select
-                                      label="Sports Interest"
-                                      defaultValue="None"
-                                      {...register("Sports")}
-                                      color="blue"
-                                      class="bg-gray-50  text-gray-600 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                                    >
-                                      <option selected value="">Enter your sports Interest</option>
-                                      <option value="Basketball">Basketball</option>
-                                      <option value="Soccer">Soccer</option>
-                                      <option value="Tennis">Tennis</option>
-                                    </select>
-                                  </div>
-                                  <div className="col-span-2">
-                                    <select
-                                      label="Career Interest"
-                                      defaultValue="None"
-                                      class="bg-gray-50  text-gray-600 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                                    
-                                      {...register("Career")}
-                                      color="blue"
-                                    >
-                                      <option selected value="">Enter your career Interest</option>
-                                      <option value="ComputerSci">Computer Science</option>
-                                      <option value="Business">Business</option>
-                                      <option value="Engineering">Engineering</option>
-                                      <option value="Nursing">Nursing</option>
-                                      <option value="Finance">Finance</option>
-                                      <option value="Aerospace">Aerospace</option>
-                                      <option value="Economics">Economics</option>
-                                      <option value="Management">Management</option>
-                                      <option value="AI">Artificial Intelligence</option>
-                                      <option value="Marketing">Marketing</option>
-                                      <option value="Psychology">Psychology</option>
-                                    </select>
-                                  </div>
-                                </div>
-                                <div class="mt-5 mx-10">
-                                  <button
-                                    type="submit"
-                                    class="w-full py-3 px-4 inline-flex justify-center items-center gap-x-2 text-md font-semibold rounded-lg border border-blue-600 text-blue-600 bg-white hover:bg-gray-50 disabled:opacity-50 disabled:pointer-events-none"
-                                  >
-                                    Submit
-                                  </button>
-                                </div>
-                        </form>
+              <form onSubmit={handleSubmit(onSubmit)}>
+                <div class="grid grid-cols-2 gap-4">
+                  <div className="col-span-2">
+                    <input
+                      label="SAT Verbal Score"
+                      color="blue"
+                      type="number"
+                      aria-describedby="helper-text-explanation"
+                      class="bg-gray-50  text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:border-gray-600 placeholder-gray-600 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                      placeholder="SAT Verbal Score"
+                      {...register("SATV", {
+                        required: "Please enter your SAT Verbal Score.",
+                        min: 0,
+                        max: 800,
+                      })}
+                    />
+
+                    {errors.SATV && (
+                      <p className="mt-2 text-sm text-red-500">
+                        {errors.SATV.message}
+                      </p>
+                    )}
+                  </div>
+                  <div className="col-span-2">
+                    <input
+                      label="SAT Math Score"
+                      aria-describedby="helper-text-explanation"
+                      class="bg-gray-50  text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:border-gray-600 placeholder-gray-600 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                      placeholder="SAT Math Score"
+                      color="blue"
+                      type="number"
+                      {...register("SATM", {
+                        required: "Please enter your SAT Math Score.",
+                        min: 0,
+                        max: 800,
+                      })}
+                    />
+                    {errors.SATM && (
+                      <p className="mt-2 text-sm text-red-500">
+                        {errors.SATM.message}
+                      </p>
+                    )}
+                  </div>
+                  
+                  <div className="col-span-2">
+                    <select
+                      label="Career Interest"
+                      defaultValue="None"
+                      class="bg-gray-50  text-gray-600 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                      {...register("Career")}
+                      color="blue"
+                    >
+                      <option selected value="">
+                        Enter your career Interest
+                      </option>
+                      <option value="ComputerSci">Computer Science</option>
+                      <option value="Business">Business</option>
+                      <option value="Engineering">Engineering</option>
+                      <option value="Nursing">Nursing</option>
+                      <option value="Finance">Finance</option>
+                      <option value="Aerospace">Aerospace</option>
+                      <option value="Economics">Economics</option>
+                      <option value="Management">Management</option>
+                      <option value="AI">Artificial Intelligence</option>
+                      <option value="Marketing">Marketing</option>
+                      <option value="Psychology">Psychology</option>
+                    </select>
+                    
+                    <div class="relative mb-6 mx-2">
+                    <label for="steps-range" class="block mt-2 text-white text-start dark:text-white">Career Interest Weight</label>
+
+                      <input
+                        id="labels-range-input"
+                        type="range"
+                        min="0"
+                        max="0.5"
+                        step="0.1"
+                        onChange={handleSliderChange}
+                        class="transparent h-[4px] w-full cursor-pointer appearance-none border-transparent bg-neutral-200 dark:bg-neutral-600"
+     ></input>
+                      <span class="text-sm text-white absolute start-0 -bottom-6">
+                       0
+                      </span>
+                      <span class="text-sm text-white absolute end-0 -bottom-6">
+                       0.5
+                      </span>
+                    </div>
+                  </div>
+                  <div className="col-span-2">
+                    <select
+                      label="Sports Interest"
+                      defaultValue="None"
+                      {...register("Sports")}
+                      color="blue"
+                      class="bg-gray-50  text-gray-600 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                    >
+                      <option selected value="">
+                        Enter your sports Interest
+                      </option>
+                      <option value="Basketball">Basketball</option>
+                      <option value="Soccer">Soccer</option>
+                      <option value="Tennis">Tennis</option>
+                    </select>
+                    <div class="relative mb-6 mx-2">
+                    <label for="steps-range" class="block mt-2 text-white text-start dark:text-white">Sports Interest Weight</label>
+
+                      <input
+                        id="labels-range-input"
+                        type="range"
+                        min="0"
+                        max="0.5"
+                        step={0.1}
+                        value={sportsWeight}
+                        class="transparent h-[4px] w-full cursor-pointer appearance-none border-transparent bg-neutral-200 dark:bg-neutral-600"
+                        ></input>
+                      <span class="text-sm text-white absolute start-0 -bottom-6">
+                       0
+                      </span>
+                      <span class="text-sm text-white absolute end-0 -bottom-6">
+                       0.5
+                      </span>
+                    </div>
+                  </div>
+                </div>
+                <div class="mt-5 mx-10">
+                  <button
+                    type="submit"
+                    class="w-full py-3 px-4 inline-flex justify-center items-center gap-x-2 text-md font-semibold rounded-lg border border-blue-600 text-blue-600 bg-white hover:bg-gray-50 disabled:opacity-50 disabled:pointer-events-none"
+                  >
+                    Submit
+                  </button>
+                </div>
+              </form>
             </nav>
           </div>
         </div>
